@@ -50,7 +50,7 @@ export const updateAccount = async (req, res) => {
     if (account_exist) {
       return res.status(400).json({ message: "Account Already Exists" });
     }
-    const accountUpdated = await Account.findByIdAndUpdate(id, res.body, {
+    const accountUpdated = await Account.findByIdAndUpdate(id, req.body, {
       new: true,
     }).where({ user: req.userId });
     return res.status(201).json(accountUpdated);

@@ -13,18 +13,38 @@ export const newTransaction = async (req, res) => {
     if (!existingAccount) {
       return res.status(404).json({ message: "No user" });
     } else {
+      const transaction = new Transaction({
+        type,
+        action,
+        amount,
+        desc,
+        account_id: accountId,
+        user: req.userId,
+      });
       if (type === "income") {
-        const transaction = await Transaction.create({
-          type,
-          action,
-          amount,
-          desc,
-          account_id: accountId,
-          user: req.userId,
-        });
+        await transaction.save();
         if (transaction) {
           let newBalance;
           newBalance = balance + amount;
+          await Account.findByIdAndUpdate(
+            accountId,
+            { $set: { balance: newBalance } },
+            { new: true }
+          );
+        }
+        return res.status(201).json(transaction);
+      } else if (type === "expense") {
+        if (balance === 0) {
+          return res
+            .status(404)
+            .json({ message: "You don't have any Balance" });
+        } else if (balance < amount) {
+          return res.status(404).json({ message: `You have only $${balance}` });
+        }
+        await transaction.save();
+        if (transaction) {
+          let newBalance;
+          newBalance = balance - amount;
           await Account.findByIdAndUpdate(
             accountId,
             { $set: { balance: newBalance } },
