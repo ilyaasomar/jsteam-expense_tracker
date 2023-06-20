@@ -28,7 +28,15 @@ const authSlice = createSlice({
     loading: false,
     error: '',
   },
-  reducers: {},
+  reducers: {
+    clearError: (state) => {
+      state.error = '';
+    },
+    Logout: (state) => {
+      state.user = [];
+      localStorage.clear();
+    },
+  },
   extraReducers: {
     [Login.pending]: (state) => {
       state.loading = true;
@@ -36,6 +44,7 @@ const authSlice = createSlice({
     [Login.fulfilled]: (state, action) => {
       state.loading = false;
       state.user = action.payload;
+      localStorage.setItem('user', JSON.stringify(action.payload.data));
       state.error = '';
     },
     [Login.rejected]: (state, action) => {
@@ -44,5 +53,5 @@ const authSlice = createSlice({
     },
   },
 });
-
+export const { clearError, Logout } = authSlice.actions;
 export default authSlice.reducer;

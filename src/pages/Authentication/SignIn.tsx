@@ -1,20 +1,30 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Login } from '../../redux/slices/authSlice';
+import { Login, clearError } from '../../redux/slices/authSlice';
 import { toast } from 'react-toastify';
 
 const SignIn = () => {
+  // select data from store
+  const { error } = useSelector((state) => state.authReducer);
   const [userData, setUser] = useState({
     email: '',
     password: '',
   });
+  console.log(error);
 
+  // if credentials wrong show this message
+  useEffect(() => {
+    error && toast.error(error);
+  }, [error]);
+  //
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleSubmit = (e: any) => {
     e.preventDefault();
+    // call clear error reducer
+    dispatch(clearError());
     dispatch(Login({ userData, navigate, toast }));
 
     console.log(userData);

@@ -1,9 +1,8 @@
 import Breadcrumb from '../../components/Breadcrumb';
-import DefaultLayout from '../../layout/DefaultLayout';
 
 const AccountForm = () => {
   return (
-    <DefaultLayout>
+    <>
       <Breadcrumb pageName="Create Account" />
 
       <div className="grid grid-cols-1 gap-9">
@@ -91,7 +90,7 @@ const AccountForm = () => {
           </div>
         </div>
       </div>
-    </DefaultLayout>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
-
+import protectedRoutes from './components/protectedRoutes/protectedRoutes';
 import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
 import ECommerce from './pages/Dashboard/ECommerce';
@@ -36,21 +36,22 @@ function App() {
     <>
       <ToastContainer />
       <Routes>
-        <Route path="/" element={<ECommerce />} />
-        <Route path="/account/create-account" element={<AccountForm />} />
-        <Route path="/account/accounts" element={<AccountTable />} />
-        <Route path="/general/create-action" element={<GeneralForm />} />
-        <Route path="/general/actions" element={<GeneralTable />} />
-        <Route
-          path="/transaction/create-transaction"
-          element={<TransactionForm />}
-        />
-        <Route
-          path="/transaction/transactions"
-          element={<TransactionTable />}
-        />
-        <Route path="/user/create-user" element={<UserForm />} />
-        <Route path="/user/users" element={<UserTable />} />
+        <Route path="/" element={<ECommerce />}>
+          <Route path="/account/create-account" element={<AccountForm />} />
+          <Route path="/account/accounts" element={<AccountTable />} />
+          <Route path="/general/create-action" element={<GeneralForm />} />
+          <Route path="/general/actions" element={<GeneralTable />} />
+          <Route
+            path="/transaction/create-transaction"
+            element={<TransactionForm />}
+          />
+          <Route
+            path="/transaction/transactions"
+            element={<TransactionTable />}
+          />
+          <Route path="/user/create-user" element={<UserForm />} />
+          <Route path="/user/users" element={<UserTable />} />
+        </Route>
         <Route path="/login" element={<SignIn />} />
         <Route path="/auth/signup" element={<SignUp />} />
       </Routes>

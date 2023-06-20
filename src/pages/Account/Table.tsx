@@ -3,7 +3,7 @@ import Breadcrumb from '../../components/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
 const AccountTable = () => {
   return (
-    <DefaultLayout>
+    <>
       <Breadcrumb pageName="Accounts" />
 
       <div className="flex flex-col gap-10">
@@ -372,7 +372,7 @@ const AccountTable = () => {
           </div>
         </div>
       </div>
-    </DefaultLayout>
+    </>
   );
 };
 
