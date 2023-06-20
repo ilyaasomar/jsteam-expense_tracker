@@ -51,21 +51,25 @@ export const login = async (req, res) => {
   let existingUser;
   try {
     existingUser = await User.findOne({ email });
+    if (!existingUser) {
+      return res.status(400).json({ message: "Invalid Email or Password" });
+    }
+    const isPasswordCorrect = bcrypt.compareSync(
+      password,
+      existingUser.password
+    );
+    if (!isPasswordCorrect) {
+      return res.status(400).json({ message: "Invalid Email or Password" });
+    }
+    const payload = {
+      userID: existingUser._id,
+      username: existingUser.username,
+    };
+    const token = jwt.sign(payload, secret, { expiresIn: "3h" });
+    return res.status(200).json({ userData: existingUser, token });
   } catch (error) {
-    return console.log(error);
+    return res.status(500).json({ message: error.message });
   }
-  if (!existingUser) {
-    return res
-      .status(400)
-      .json({ message: "Couldn't find user by this username" });
-  }
-  const isPasswordCorrect = bcrypt.compareSync(password, existingUser.password);
-  if (!isPasswordCorrect) {
-    return res.status(400).json({ message: "Incorrect password" });
-  }
-  const payload = { userID: existingUser._id, username: existingUser.username };
-  const token = jwt.sign(payload, secret, { expiresIn: "3h" });
-  return res.status(200).json({ userData: existingUser, token });
 };
 
 export const update = async (req, res) => {
